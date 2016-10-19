@@ -18,6 +18,7 @@ module LogStashLogger
     autoload :Stderr, 'logstash-logger/device/stderr'
     autoload :Balancer, 'logstash-logger/device/balancer'
     autoload :MultiDelegator, 'logstash-logger/device/multi_delegator'
+    autoload :HTTP, 'logstash-logger/device/http'
 
     def self.new(opts)
       opts = opts.dup
@@ -55,6 +56,7 @@ module LogStashLogger
         when :stderr then Stderr
         when :multi_delegator then MultiDelegator
         when :balancer then Balancer
+        when :http then HTTP
         else fail ArgumentError, 'Invalid device type'
       end
     end
