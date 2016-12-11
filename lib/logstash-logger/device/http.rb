@@ -36,7 +36,6 @@ module LogStashLogger
               time: time.iso8601(9),
               type: 'json'
             }.to_json
-            puts "POSTING #{request.body}"
             @http.request(request)
 
             if @ending && @queue.empty?
