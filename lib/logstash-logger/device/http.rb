@@ -6,6 +6,7 @@ module LogStashLogger
 
     class HTTP < Base
       DEFAULT_HOST = '0.0.0.0'
+      DEFAULT_PATH = '/'
 
       attr_reader :host, :port
 
@@ -13,6 +14,7 @@ module LogStashLogger
         super
         @port = opts[:port] || fail(ArgumentError, "Port is required")
         @host = opts[:host] || DEFAULT_HOST
+        @path = opts[:path] || DEFAULT_PATH
         @http = Net::HTTP.new(@host, @port)
         @http.use_ssl = opts[:use_ssl] || opts[:ssl_enable]
         @ending = false
@@ -22,7 +24,7 @@ module LogStashLogger
         @log_thread = Thread.new do
           loop do
             message, time = @queue.deq
-            request = Net::HTTP::Post.new('/', {'Content-Type': 'application/json'})
+            request = Net::HTTP::Post.new(@path, {'Content-Type': 'application/json'})
 
             # Try to match the fields provided by aptible's logdrain
             request.body = {
